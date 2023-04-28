@@ -231,15 +231,13 @@ namespace SAM_GUI
 
             startInfo.Arguments = firstPart + " " + args + " " + secondPart;
 
-            Console.WriteLine("command :["+firstPart + " " + secondPart+"]");
+            Console.WriteLine("command :["+ firstPart + " " + args + " " + secondPart + "]");
             process.StartInfo = startInfo;
             process.Start();
         }
 
         private void pathSpecify_click(object sender, EventArgs e)
         {
-            /*Form2 pathWindow = new Form2();
-            pathWindow.Show();*/
             using (OpenFileDialog openFileDialog1 = new OpenFileDialog())
             {
                 openFileDialog1.InitialDirectory = "c:\\";
