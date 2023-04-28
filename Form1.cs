@@ -22,6 +22,8 @@ namespace SAM_GUI
 
         Button enter = new Button();
 
+        Button pathSpecify = new Button();
+
         Label speedLbl = new Label();
         TrackBar speedSlider = new TrackBar();
 
@@ -49,6 +51,8 @@ namespace SAM_GUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.Size = new Size(580, 350);
+
             this.Text = "SAM GUI";
             //string ico = "resources/sam.ico";
             this.Icon = new Icon("../../resources/sam.ico");
@@ -72,6 +76,7 @@ namespace SAM_GUI
 
             this.Controls.Add(enter);
 
+            
 
             speedSlider.Location = new Point(beginningWidth, userInput.Height + 40);
             speedSlider.Name = "Speed";
@@ -156,6 +161,15 @@ namespace SAM_GUI
             this.Controls.Add(options);
             options.SelectedValueChanged += new EventHandler(options_SelectedValueChanged);
 
+            pathSpecify.Location = new Point(beginningWidth, mouthSlider.Height + 220);
+            pathSpecify.Text = "Path";
+            pathSpecify.Margin = new Padding(0, 0, 0, 0);
+            //enter.Font = font;
+            /*pathSpecify.BackColor = foreground;*/
+            pathSpecify.Click += new EventHandler(pathSpecify_click);
+
+            this.Controls.Add(pathSpecify);
+
             //menu.Location = new Point(enter.Width + 300, beginningHeight);
             menu.Text = "prout";
             menu.Dock = DockStyle.Right;
@@ -175,6 +189,11 @@ namespace SAM_GUI
             Console.WriteLine(firstPart + " " + secondPart);
             process.StartInfo = startInfo;
             process.Start();
+        }
+
+        private void pathSpecify_click(object sender, EventArgs e)
+        {
+
         }
 
         private void speedSlider_Scroll(object sender, EventArgs e)
@@ -261,71 +280,7 @@ namespace SAM_GUI
                     mouthLbl.Text = "Mouth : 200";
                     break;
             }
-            /*if (options.SelectedItem.ToString() == "SAM"){
-                speedSlider.Value = 72;
-                speedLbl.Text = "Speed : 72";
-                pitchSlider.Value = 64;
-                pitchLbl.Text = "Pitch : 64";
-                throatSlider.Value = 128;
-                throatLbl.Text = "Throat : 128";
-                mouthSlider.Value = 128;
-                mouthLbl.Text = "Mouth : 128";
-            }
-            else if (options.SelectedItem.ToString() == "Elf")
-            {
-                speedSlider.Value = 72;
-                speedLbl.Text = "Speed : 72";
-                pitchSlider.Value = 64;
-                pitchLbl.Text = "Pitch : 64";
-                throatSlider.Value = 110;
-                throatLbl.Text = "Throat : 110";
-                mouthSlider.Value = 160;
-                mouthLbl.Text = "Mouth : 160";
-            }
-            else if (options.SelectedItem.ToString() == "Little Robot")
-            {
-                speedSlider.Value = 92;
-                speedLbl.Text = "Speed : 92";
-                pitchSlider.Value = 60;
-                pitchLbl.Text = "Pitch : 60";
-                throatSlider.Value = 190;
-                throatLbl.Text = "Throat : 190";
-                mouthSlider.Value = 190;
-                mouthLbl.Text = "Mouth : 190";
-            }
-            else if (options.SelectedItem.ToString() == "Stuffy Guy")
-            {
-                speedSlider.Value = 82;
-                speedLbl.Text = "Speed : 82";
-                pitchSlider.Value = 72;
-                pitchLbl.Text = "Pitch : 72";
-                throatSlider.Value = 110;
-                throatLbl.Text = "Throat : 110";
-                mouthSlider.Value = 190;
-                mouthLbl.Text = "Mouth : 190";
-            }
-            else if (options.SelectedItem.ToString() == "Little Old Lady")
-            {
-                speedSlider.Value = 82;
-                speedLbl.Text = "Speed : 82";
-                pitchSlider.Value = 32;
-                pitchLbl.Text = "Pitch : 32";
-                throatSlider.Value = 145;
-                throatLbl.Text = "Throat : 145";
-                mouthSlider.Value = 145;
-                mouthLbl.Text = "Mouth : 145";
-            }
-            else if (options.SelectedItem.ToString() == "Extra-Terrestrial")
-            {
-                speedSlider.Value = 100;
-                speedLbl.Text = "Speed : 100";
-                pitchSlider.Value = 64;
-                pitchLbl.Text = "Pitch : 64";
-                throatSlider.Value = 150;
-                throatLbl.Text = "Throat : 150";
-                mouthSlider.Value = 200;
-                mouthLbl.Text = "Mouth : 200";
-            }*/
+            
             /*list0 =[72, 64, 128, 128]    #SAM
             list1 =[72, 64, 110, 160]    #Elf
             list2 =[92, 60, 190, 190]    #Little Robot
