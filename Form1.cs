@@ -23,6 +23,8 @@ namespace SAM_GUI
 
         Button pathSpecify = new Button();
 
+        Button saveToAudio = new Button();
+
         Label speedLbl = new Label();
         TrackBar speedSlider = new TrackBar();
 
@@ -56,7 +58,7 @@ namespace SAM_GUI
             if (File.Exists(path))
             {
                 SAMPath = File.ReadAllText(path);
-                Console.WriteLine("console " + File.ReadAllText(path));
+                /*Console.WriteLine("console " + File.ReadAllText(path));*/
             }
             else
             {
@@ -88,7 +90,13 @@ namespace SAM_GUI
 
             this.Controls.Add(enter);
 
-            
+            saveToAudio.Location = new Point(enter.Width + 210, userInput.Height);
+            saveToAudio.Text = "Save .wav";
+            saveToAudio.Margin = new Padding(0, 0, 0, 0);
+            saveToAudio.BackColor = foreground;
+            saveToAudio.Click += new EventHandler(saveToAudio_click);
+
+            this.Controls.Add(saveToAudio);
 
             speedSlider.Location = new Point(beginningWidth, userInput.Height + 40);
             speedSlider.Name = "Speed";
@@ -190,15 +198,40 @@ namespace SAM_GUI
 
         private void enter_click(object sender, EventArgs e)
         {
+            SAMSpeak("");
+        }
+
+        private void saveToAudio_click(object sender, EventArgs e)
+        {
+            string filePath;
+            using (SaveFileDialog folderBrowser = new SaveFileDialog())
+            {
+                folderBrowser.Filter = "Wav|*.wav";
+                folderBrowser.Title = "Save File";
+                if (folderBrowser.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = folderBrowser.FileName;
+                    File.Delete(filePath);
+                    string arg = "-wav " + filePath;
+                    SAMSpeak(arg);
+                }
+            }            
+        }
+
+        private void SAMSpeak(string wavArg)
+        {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
             startInfo.FileName = "cmd.exe";
-            string firstPart = "/C "+SAMPath;
-            string args = "-speed " + speedSlider.Value.ToString() + " -pitch " + pitchSlider.Value.ToString() + " -throat " + throatSlider.Value.ToString() + " -mouth " + mouthSlider.Value.ToString(); ; 
+
+            string firstPart = "/C " +SAMPath;
+            string args = wavArg + " -speed " + speedSlider.Value.ToString() + " -pitch " + pitchSlider.Value.ToString() + " -throat " + throatSlider.Value.ToString() + " -mouth " + mouthSlider.Value.ToString(); ;
             string secondPart = userInput.Text;
-            startInfo.Arguments = firstPart+" "+args +" "+secondPart;
-            Console.WriteLine(firstPart + " " + secondPart);
+
+            startInfo.Arguments = firstPart + " " + args + " " + secondPart;
+
+            Console.WriteLine("command :["+firstPart + " " + secondPart+"]");
             process.StartInfo = startInfo;
             process.Start();
         }
