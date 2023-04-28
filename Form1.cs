@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,11 +13,9 @@ using System.Diagnostics;
 namespace SAM_GUI
 {
     public partial class Form1 : Form
-    {
-        string SAMPath = "C:/Users/hygia/Documents/SAM/sam.exe";
-
-        int beginningWidth = 20;
-        int beginningHeight = 20;
+    {   
+        string SAMPath;
+        string path = "../../resources/path.txt";
 
         TextBox userInput = new TextBox();
 
@@ -44,6 +43,9 @@ namespace SAM_GUI
         Color background = Color.FromArgb(124, 113, 218);
         Color foreground = Color.FromArgb(62, 50, 162);
 
+        int beginningWidth = 20;
+        int beginningHeight = 20;
+
         public Form1()
         {       
             InitializeComponent();            
@@ -51,6 +53,16 @@ namespace SAM_GUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            if (File.Exists(path))
+            {
+                SAMPath = File.ReadAllText(path);
+                Console.WriteLine("console " + File.ReadAllText(path));
+            }
+            else
+            {
+                File.Create(path);
+                MessageBox.Show("Please specify SAM's path");
+            }
             this.Size = new Size(580, 350);
 
             this.Text = "SAM GUI";
@@ -193,7 +205,32 @@ namespace SAM_GUI
 
         private void pathSpecify_click(object sender, EventArgs e)
         {
+            /*Form2 pathWindow = new Form2();
+            pathWindow.Show();*/
+            using (OpenFileDialog openFileDialog1 = new OpenFileDialog())
+            {
+                openFileDialog1.InitialDirectory = "c:\\";
+                openFileDialog1.Filter = "exe files (*.exe)|*.exe|All files (*.*)|*.*";
+                openFileDialog1.FilterIndex = 1;
+                openFileDialog1.RestoreDirectory = true;
 
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    SAMPath = openFileDialog1.FileName;
+                    if (!File.Exists(path))
+                    {
+                        File.Create(path);
+                    }
+                    else
+                    {
+                        using (StreamWriter writer = new StreamWriter(path))
+                        {
+                            writer.Write(SAMPath);
+                        }
+                    }                    
+                }
+            }
+            Console.WriteLine(SAMPath);
         }
 
         private void speedSlider_Scroll(object sender, EventArgs e)
